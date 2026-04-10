@@ -1,0 +1,377 @@
+   1. INICIANDO O SISTEMA:
+
+I – TELA DE ACESSO
+        A primeira tela do sistema é para o acesso, que deve digitar o seu login e a senha, logo após teclar
+
+ENTER ou clicar com no botão esquerdo do mouse no botão da tela com o ícone vermelho.
+
+CLICK AQUI                      DIGITE SUA
+PARA TER                        SENHA
+ACESSO A
+TELA DE                      CLICK PARA
+LOGIN                        CONFIRMAR A
+                             ENTRADA NO
+           DIGITE SEU        SISTEMA
+           CODINOME
+                       SERÁ INFORMADO
+                       PELA SUPERVISÃO
+                       QUANDO DEVERÁ SER
+                       MARCADA ESTA
+                       OPÇÃO
+
+                                            1
+TELA APÓS O LOGIN:
+
+                    INCLUSÃO                                           SAÍDA
+                    DE
+                    DENÚNCIA                             PESQUISAR NO
+                                                         SISTEMA
+SEU
+CODINOME                      ASSISTENTE DE
+                              DIFUSÃO
+
+                    INCLUSÃO DE
+                    ATENDIMENTO
+
+                                 PESQUISA DE LOGRADOURO
+                                 SEM INCLUSÃO DO MESMO
+                                 NA DENÚNCIA
+
+        Clicando com o botão esquerdo do mouse no mega-fone se tem acesso às telas de cadastro de
+denúncias. E para cadastrar uma nova denúncia basta clicar no ícone representado por uma folha em branco,
+disponibilizando um novo registro, cuja numeração aparecerá zerada.
+
+                                                                                                                                    2
+2. INCLUSÃO DE NOVA DENÚNICA:
+                                      UM CLICK
+                                      PARA INICIAR
+                                      UMA NOVA
+                                      DENÚNCIA
+
+                                                                                                                                3
+    2.1 RELATO:
+
+    Nesta tela devem ser digitados todos os dados informados pelo denunciante. E não se pode deixar de fazer
+as perguntas fundamentais e indispensáveis:
+
+ESCREVA AQUI O TEXTO DA DENÚNCIA
+
+NÃO ESQUEÇA DE USAR                   CANCELA A OPERAÇÃO
+O CORRETOR
+
+USE SEMPRE CAIXA ALTA (LETRAS MAIUSCULAS)
+
+                      DATA E HORA DO  SEU CODINOME
+                      RECEBIMENTO
+
+ESSE É O NÚMERO DA                    LOCALIZAR
+DENÚNCIA, SÓ APARECE                  DENÚNICA SALVA
+DEPOIS QUE A MESMA É
+SALVA.
+
+OBS.: A Denúncia só poderá ser salva, depois que os dados obrigatórios estejam preenchidos, sendo os
+campos do RELATO, LOCAL DE OCORRÊNCIA, DADOS.
+
+                                                                                                      4
+         2 LOCAL DE OCORRÊNCIA:
+A tela de local de ocorrência deve ser preenchida com o máximo de atenção.
+
+    2.2 - O campo UF pode ser mudado, disponibilizando a relação de municípios referente à Unidade
+         Federativa selecionada pelo operador;
+
+    2.3 - O campo MUNICÍPIO deve ser devidamente selecionado, sempre prestando atenção que o município
+         que sempre aparecerá em tela é RIO DE JANEIRO;
+
+    3.3 - O cadastramento do LOGRADOURO poderá ser através do cadastro da listagem de CEP ou
+ENDEREÇAMENTO MANUAL
+
+    3.4 - Quando o endereço fornecido pelo denunciante não for encontrado na listagem de CEP, deve ser
+acionado o endereçamento manual para que o operador insira o endereço fornecido pelo denunciante;
+
+                                                                                                                                    5
+NÃO USAR ESTE CAMPO
+
+PARA SELECIONAR A UF –  O PADRÃO É RJ – MAS
+USAR (MARCAR)           USANDO A SETA
+ENDEREÇAMENTO MANUAL    PODE-SE MUDAR
+
+                                                     PESQUISAR
+                                                     LOGRADOURO
+                                                     PARA PREENCHIMENTO
+                                                     AUTOMÁTICO
+
+                                                                         6
+ENDEREÇAMENTO AUTOMÁTICO:
+    1- A rua mencionada pelo denunciante é: Rua Edgard Romero – Madureira
+
+Primeira tentativa:
+
+Obs: Executada a “PESQUISA DIRETA” não foi encontrada a rua mencionada.
+
+                                                                                                                                    7
+Segunda tentativa:
+
+Obs:
+        Foi feita a consulta através da “PESQUISA AVANÇADA” utilizando-se apenas um trecho do nome
+
+da rua mencionada pelo denunciante, encontrando-se “Avenida Ministro Edgard Romero” e não “Rua Edgard
+Romero”, como citado. Vale então confirmar a informação com o denunciante, estando correta clique no
+ícone “PREENCHER”, para que o campo de “LOGRADOURO” seja preenchido automaticamente. Para
+finalizar a tela basta preencher os campos “NÚMERO” e “COMPLEMENTO”, se houver.
+Ressalva:
+
+         Observe que o nome Avenida Edgard Romero se repete diversas vezes, este fato é devido o cadastro
+ser de CEP, e existir um número de CEP para cada trecho de numeração da rua, que neste caso é muito
+extensa, ligando dois bairros. Neste caso basta escolher qualquer uma delas, que corresponda ao bairro
+mencionado. Pois não o levamos em consideração devido o denunciante nem sempre saber o número correto
+do local de ocorrência do fato narrado, apenas informando um ponto de referência.
+
+                                                                                                                                    8
+TELA FINAL DO PREECHIMENTO DO LOGRADOURO:
+
+NÃO USAR ESTE CAMPO
+
+                     PREENCHER ESTES       TODO O RESTANTE
+                     CAMPOS SE HOUVER      QUE NÃO FOR
+                                           NÚMERO. EX.: LT
+SOMENTE NÚMERO                             21 QD 20002
+
+                                                            9
+ENDEREÇAMENTO MANUAL:
+
+                 NÃO USAR ESTE CAMPO
+
+EX.: AV. – TV –  ESTES CAMPOS DEVERÃO SER
+BC, R, ETC       PREECHIDOS SEM “ACENTOS,
+                 Ç, ¨”, QUANTO AO BAIRRO
+                 VERIFICAR A GRAFIA.
+
+                                                              MARCANDO AQUI LIBERA
+                                                              TODOS OS CAMPOS PARA
+                                                              PREENCHIMENTO MANUAL
+
+                                                                                    10
+4 - INCLUSÃO DE ENVOLVIDOS:
+    4.1 - Para incluir envolvidos basta clicar em um dos bonecos na parte inferior da tela, liberando assim uma
+    ficha, onde serão inseridos dados sobre a pessoa denunciada.
+
+                          CLICK AQUI PARA INCLUIR OS ENVOLVIDOS, COM AS
+                          SUAS CARACTERISTICAS E ENDEREÇOS. COMO AS TELAS
+                          SEGUINTES MOSTRAM.
+
+                                                                                                                                   11
+4.2 - CARACTEÍSTICAS PESSOAIS:
+
+        Caso o denunciante não saiba fornecer o nome e/ou apelido do envolvido, com o cursor neste campo
+clique o botão direito do mouse e automaticamente o(s) campo(os) será(ão) preenchido(s) com a palavra
+“DESCONHECIDO”.
+Uma vez a pasta aberta todos os campos devem ser preenchidos, para que possa ser salva.
+
+EX.: CICATRIZ,                                          CLICK E SELECIONE UMA
+TATUAGEM, ETC.                                          OPÇÃO.
+
+                PREENCHER COM O NOME E APELIDO, SE FOR
+                DESCONHECIDO CLICK COM O BOTÃO DIREITO DO
+                MOUSE, QUE O PREENCHIMENTO É AUTOMÁTICO.
+
+                                                                  PREENCHA COM NUMEROS,
+                                                                  NÃO É PRECISO APAGAR O “0”.
+
+                                                                                                                 12
+5 - DADOS DA DENÚNCIA:
+        A pasta de DADOS contém diversos campos a serem preenchidos, conforme discriminados abaixo:
+        Apesar de existirem vários campos nesta pasta, o campo fundamental para a pasta ser salva é o campo
+
+de ASSUNTO, que veremos adiante.
+1 – CLASSIFICAÇÃO:
+
+        A denúncia pode ser classificada em: NORMAL, IMPORTANTE e DADOS INSUFICIENTES de
+acordo com as informações narradas pelo denunciante.
+
+2 – DIFUSÃO IMEDIAT
+
+Ação destacada na denúncia sinalizando a urgência da ocorrência
+3 – BLOQUEIO DA DENÚNCIA:
+
+        Ainda, na página de DADOS existe um cadeado amarelo, que quando acionado faz o bloqueio de
+denúncias. Para este bloqueio ser realizado a denúncia deve estar aberta.
+4 – DD MULHER:
+
+        O DD MULHER deve ser acionado toda vez que estiver sendo cadastrada uma denúncia de Violência
+contra a mulher, num contexto intrafamiliar. Toda vez que acionado serão disponibilizados dois questionários
+com perguntas afins.
+OBS.: Tome cuidado para não acionar o ícone de DD MULHER em denúncias que não estejam cadastradas
+violência contra a mulher, pois o questionário será cadastrado e contabilizado mesmo que não seja
+preenchido, gerando informações incorretas.
+
+                                                                                                                                   13
+                           BLOQUEAR A DD
+
+CLASSIFICAÇÃO DA DD,       MARQUE AQUI SE A  QUESTIONÁRIO
+CLICK NA SETA PARA OPÇÕES  DD FOR IMEDIATA   DD MULHER
+
+5 – ASSUNTO:
+
+        Clicando no botão de assunto será disponibilizada uma janela, onde será feita a classificação da
+informação. O assunto é dividido por CLASSE DE ASSUNTO e subdividido em TIPO DE ASSUNTO,
+conforme pode ser observado (Relação em anexo).
+
+        Quando existir mais de um assunto na classificação de uma mesma denúncia, deve-se selecionar o
+assunto principal. No entanto o próprio sistema classifica como assunto principal o primeiro assunto
+selecionado. Indicado com o ícone da mãozinha.
+
+6 – XPTO:
+
+        XPTO é um termo utilizado nas denúncias cujos assuntos estão em evidência (sendo então muito
+importante a leitura do Clipping para manter-se atualizado), sendo criado para cada situação um nome chave
+correlacionado ao episódio.
+
+        O Operador deverá saber classificar o XPTO de acordo com o quadro demonstrativo utilizado pela
+Central Disque Denúncia.
+
+        Para selecionar o XPTO desejado clique no botão de XPTO e, será disponibilizada uma nova janela,
+clique novamente na seta ao lado do campo em branco e você terá acesso a toda listagem de XPTO existente
+em nosso sistema; basta selecioná-lo e depois salvar.
+
+        Sendo divididos em XPTO PERMANENTE E XPTO ATUAIS (vide quadro informativo).
+
+                                                                                                                                   14
+7 – ROUBO E FURTO DE VEÍCULO:
+
+        O CAMPO DE ROUBO E FURTO DE VEÍCULO deve ser preenchido sempre que o denunciante
+ligar informando o roubo ou furto de seu veículo ou de uma pessoa conhecida. Ela deve informar os dados do
+veículo, o nome do proprietário (caso não seja o próprio) e se identificar.
+
+INCLUSÃO DE XPTO  INCLUSÃO DE ASSUNTO
+                                    INCLUSÃO DE VEÍCULO
+
+                             CAMPO DE COMUNICAÇÃO INTERNA
+
+                                                           15
+INCLUSÃO DE CLASSE DE ASSUNTO:
+
+                                                                        CLIQUE NA SETA PARA VER AS OPÇÕES E
+                                                                        UM CLICK NA OPÇÃO ESCOLHIDA
+
+                                                                                                                                   16
+TIPO DE ASSUNTO:
+
+                  CLIQUE NA SETA PARA VER AS OPÇÕES E  DEPOIS SALVE
+                  UM CLICK NA OPÇÃO ESCOLHIDA          A INCLUSÃO DO
+                                                       ASSUNTO
+
+                                                                      17
+INCLUSÃO DE XPTO:
+
+CLIQUE NA SETA PARA VER AS OPÇÕES E  DEPOIS SALVE A
+UM CLICK NA OPÇÃO ESCOLHIDA          INCLUSÃO DO ASSUNTO
+
+                   CANCELA A INCLUSÃO DO XPTO
+
+9 – DIFUSÕES:
+
+        Na página de difusão são efetuados os encaminhamentos das denúncias, após serem analisadas pelos
+difusores, de acordo com o seu relato e local de ocorrência. A difusão pode ser interna ou externa; operacional
+ou informativa.
+
+                                                          18
+MOSTRA PARA QUAL
+ÓRGÃO A DENÚNICA
+FOI ENCAMINHADA
+
+                                                                                                   19
+10 – RESULTADOS:
+
+        Na página de resultados é inserido o resultado referente à denúncia. Somente os campos de resultado
+direto e quantificação podem ser manuseados. Os campos resultado indireto, complemento e atendimento são
+automaticamente correlacionados pelo sistema.
+
+INCLUSÃO DE RESULTADO  INCLUSÃO DE ITENS
+DIRETO                 APREENDIDOS
+
+                                          20
+PESQUISA DE LOGRADOURO:
+
+PESQUISA PELO  PESQUISA POR QQ   PREENCHER LOGRADOURO
+NOME DA RUA    PARTE DO NOME DA  PESQUISADO NA DD
+               RUA
+
+               EFETUAR A PESQUISA AVANÇADA  ESCOLHER MUNICIPIO
+                                            OU ATIVAR TODOS
+
+                                                       21
+PREENCHIMENTO DO LOGRADOURO NÃO INFORMADO PELO DENUNCIANTE:
+
+          NÃO USAR ESTE CAMPO             CLICK AQUI
+
+                      DEFINA O MUNICIPIO
+CONFIRME O PREECHIMENTO:
+
+                                                             22
+INCLUSÃO DE VEÍCULO ROUBADO:
+
+           CLICK AQUI E ESCOLHA A MARCA E    CAMPOS OBRIGATÓRIOS
+           MODELO
+
+DADOS DO COMUNICANTE:
+
+DSDEMFOURLHOEPRR:OPRIETÁRIO, O DENUNCIANTE,  QQ PESSOA QUE NÃO SEJA O
+
+CLICANDO AQUI O SISTEMA TRARÁ O NOME         PROPRIETÁRIO
+
+DA TELA ANTERIOR.                                                      23
+DD MULHER:
+
+CLICK E ESCOLHA A OPÇÃO        RESPOSTA SIM, LIBERA OS
+                               CAMPOS
+  SE MARCAR FISICA, LIBERA OS
+  DEMAIS CAMPOS
+
+                                                        24
+  CLICK E ESCOLHA A OPÇÃO  SENDO A RESPOSTA POSITIVA,
+EXCLUI O QUESTIONÁRIO      LIBERA OS DEMAIS CAMPOS
+
+                                                      SALVA E VOLTA A
+                                                      DENÚNCIA
+
+                                                                       25
+LOCALIZAR DENÚNCIA PELO NÚMERO:
+        Com a tela de cadastramento da Denúncia, use a tecla F9 ou click no localizador:
+
+                                    LOCALIZADOR
+
+DIGITE O Nº DA DD  DIGITE O MÊS DA
+                   DD
+
+                   DEPOIS DE PREENCHIDO OS CAMPOS ANTERIORES, DÊ ENTER OU
+                   CLICK AQUI PARA LOCALIZAR A DENÚNCIA.
+
+                                                                                          26
+ATENDIMENTO:
+                 Toda e qualquer informação que não gere denúncia.
+
+ESCREVA AQUI O
+TEXTO, E NÃO
+ESQUEÇA DE USAR
+O CORRETOR.
+
+CORRETOR
+
+                 DEFINA O TIPO  LOCALIZAR DENÚNCIA PARA
+                 DE             CORRELACIONAR COM O
+                 ATENDIMENTO    ATENDIMENTO EM QUESTÃO
+
+                                                                    27
+Inclusão de Complemento:
+
+        COM A DENÚNCIA ORIGINAL NA TELA, CLIQUE NO ICONE DO COMPLEMENTO, O
+SISTEMA TRARÁ PARA A NOVA DENÚNCIA O TEXTO DA DENÚNCIA ORIGINAL, ENTÃO
+PROCEDA COMO NO INÍCIO DO MANUAL.
+
+                 INCLUIR COMPLEMENTO
+A inclusão do complemento precisa gerar um novo registro no sistema e ao mesmo tempo ser uma extensão
+da ocorrência primária.
+
+                                                                                                                                   28
+29
+

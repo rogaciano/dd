@@ -1,0 +1,602 @@
+{
+  "summary": {
+    "table_count": 54,
+    "explicit_relationship_count": 5,
+    "inferred_relationship_count": 57,
+    "review_item_count": 6
+  },
+  "explicit_relationships": [
+    {
+      "source_table": "assunto_denuncia",
+      "source_column": "ass_tpa_cd",
+      "target_table": "assunto_tipo",
+      "target_column": "tpa_cd",
+      "category": "explicit",
+      "confidence": "explicit",
+      "reason": "Constraint FOREIGN KEY declarada no SQL Server."
+    },
+    {
+      "source_table": "assunto_tipo",
+      "source_column": "tpa_cla_cd",
+      "target_table": "assunto_classe",
+      "target_column": "cla_cd",
+      "category": "explicit",
+      "confidence": "explicit",
+      "reason": "Constraint FOREIGN KEY declarada no SQL Server."
+    },
+    {
+      "source_table": "difusao_externa",
+      "source_column": "dex_ext_cd",
+      "target_table": "orgaos_externos",
+      "target_column": "ext_cd",
+      "category": "explicit",
+      "confidence": "explicit",
+      "reason": "Constraint FOREIGN KEY declarada no SQL Server."
+    },
+    {
+      "source_table": "orgaos_externos",
+      "source_column": "ext_oet_cd",
+      "target_table": "orgaos_externos_tipos",
+      "target_column": "oet_cd",
+      "category": "explicit",
+      "confidence": "explicit",
+      "reason": "Constraint FOREIGN KEY declarada no SQL Server."
+    },
+    {
+      "source_table": "vei_modelo",
+      "source_column": "mar_cd",
+      "target_table": "vei_marca",
+      "target_column": "mar_cd",
+      "category": "explicit",
+      "confidence": "explicit",
+      "reason": "Constraint FOREIGN KEY declarada no SQL Server."
+    }
+  ],
+  "inferred_relationships": [
+    {
+      "source_table": "acesso",
+      "source_column": "ace_rot_cd",
+      "target_table": "rotinas",
+      "target_column": "rot_cd",
+      "category": "inferred",
+      "confidence": "high",
+      "reason": "Nome da coluna bate com a PK da tabela de destino."
+    },
+    {
+      "source_table": "acesso",
+      "source_column": "ace_usu_cd",
+      "target_table": "usuarios",
+      "target_column": "usu_cd",
+      "category": "inferred",
+      "confidence": "high",
+      "reason": "Nome da coluna bate com a PK da tabela de destino."
+    },
+    {
+      "source_table": "acesso_tempo",
+      "source_column": "atd_cd",
+      "target_table": "atendimento",
+      "target_column": "atd_cd",
+      "category": "inferred",
+      "confidence": "high",
+      "reason": "Nome da coluna bate com a PK da tabela de destino."
+    },
+    {
+      "source_table": "acesso_tempo",
+      "source_column": "den_cd",
+      "target_table": "denuncia",
+      "target_column": "den_cd",
+      "category": "manual",
+      "confidence": "high",
+      "reason": "Coluna usa den_cd; denuncia_com tambem compartilha esse campo, mas a referencia mais provavel e a tabela principal denuncia."
+    },
+    {
+      "source_table": "acesso_tempo",
+      "source_column": "usu_cd",
+      "target_table": "usuarios",
+      "target_column": "usu_cd",
+      "category": "inferred",
+      "confidence": "high",
+      "reason": "Nome da coluna bate com a PK da tabela de destino."
+    },
+    {
+      "source_table": "assunto_denuncia",
+      "source_column": "ass_cla_cd",
+      "target_table": "assunto_classe",
+      "target_column": "cla_cd",
+      "category": "inferred",
+      "confidence": "high",
+      "reason": "Nome da coluna bate com a PK da tabela de destino."
+    },
+    {
+      "source_table": "assunto_denuncia",
+      "source_column": "ass_den_cd",
+      "target_table": "denuncia",
+      "target_column": "den_cd",
+      "category": "manual",
+      "confidence": "high",
+      "reason": "Coluna usa den_cd; denuncia_com tambem compartilha esse campo, mas a referencia mais provavel e a tabela principal denuncia."
+    },
+    {
+      "source_table": "atendimento",
+      "source_column": "atd_att_cd",
+      "target_table": "atendimento_tipo",
+      "target_column": "att_cd",
+      "category": "inferred",
+      "confidence": "high",
+      "reason": "Nome da coluna bate com a PK da tabela de destino."
+    },
+    {
+      "source_table": "atendimento",
+      "source_column": "atd_den_cd",
+      "target_table": "denuncia",
+      "target_column": "den_cd",
+      "category": "manual",
+      "confidence": "high",
+      "reason": "Coluna usa den_cd; denuncia_com tambem compartilha esse campo, mas a referencia mais provavel e a tabela principal denuncia."
+    },
+    {
+      "source_table": "atendimento",
+      "source_column": "atd_usu_cd",
+      "target_table": "usuarios",
+      "target_column": "usu_cd",
+      "category": "inferred",
+      "confidence": "high",
+      "reason": "Nome da coluna bate com a PK da tabela de destino."
+    },
+    {
+      "source_table": "buscas",
+      "source_column": "bus_rel_cd",
+      "target_table": "relatorios",
+      "target_column": "rel_cd",
+      "category": "manual",
+      "confidence": "high",
+      "reason": "Codigo do relatorio usado pela busca."
+    },
+    {
+      "source_table": "buscas",
+      "source_column": "bus_usu_cd",
+      "target_table": "usuarios",
+      "target_column": "usu_cd",
+      "category": "inferred",
+      "confidence": "high",
+      "reason": "Nome da coluna bate com a PK da tabela de destino."
+    },
+    {
+      "source_table": "correlatas",
+      "source_column": "cor_orig_den_cd",
+      "target_table": "denuncia",
+      "target_column": "den_cd",
+      "category": "manual",
+      "confidence": "high",
+      "reason": "Coluna usa den_cd; denuncia_com tambem compartilha esse campo, mas a referencia mais provavel e a tabela principal denuncia."
+    },
+    {
+      "source_table": "correlatas",
+      "source_column": "cor_ref_den_cd",
+      "target_table": "denuncia",
+      "target_column": "den_cd",
+      "category": "manual",
+      "confidence": "high",
+      "reason": "Coluna usa den_cd; denuncia_com tambem compartilha esse campo, mas a referencia mais provavel e a tabela principal denuncia."
+    },
+    {
+      "source_table": "denuncia",
+      "source_column": "den_class",
+      "target_table": "classificacao",
+      "target_column": "cld_cd",
+      "category": "manual",
+      "confidence": "medium",
+      "reason": "Campo de classificacao sugere referencia ao catalogo classificacao."
+    },
+    {
+      "source_table": "denuncia",
+      "source_column": "den_xpto",
+      "target_table": "xpto",
+      "target_column": "xpt_cd",
+      "category": "manual",
+      "confidence": "medium",
+      "reason": "Nome do campo sugere referencia ao catalogo xpto."
+    },
+    {
+      "source_table": "difusao_externa",
+      "source_column": "dex_den_cd",
+      "target_table": "denuncia",
+      "target_column": "den_cd",
+      "category": "manual",
+      "confidence": "high",
+      "reason": "Coluna usa den_cd; denuncia_com tambem compartilha esse campo, mas a referencia mais provavel e a tabela principal denuncia."
+    },
+    {
+      "source_table": "difusao_externa",
+      "source_column": "dex_dit_cd",
+      "target_table": "difusao_tipo",
+      "target_column": "dit_cd",
+      "category": "inferred",
+      "confidence": "high",
+      "reason": "Nome da coluna bate com a PK da tabela de destino."
+    },
+    {
+      "source_table": "difusao_externa",
+      "source_column": "dex_usu_cd",
+      "target_table": "usuarios",
+      "target_column": "usu_cd",
+      "category": "inferred",
+      "confidence": "high",
+      "reason": "Nome da coluna bate com a PK da tabela de destino."
+    },
+    {
+      "source_table": "difusao_interna",
+      "source_column": "din_den_cd",
+      "target_table": "denuncia",
+      "target_column": "den_cd",
+      "category": "manual",
+      "confidence": "high",
+      "reason": "Coluna usa den_cd; denuncia_com tambem compartilha esse campo, mas a referencia mais provavel e a tabela principal denuncia."
+    },
+    {
+      "source_table": "difusao_interna",
+      "source_column": "din_dit_cd",
+      "target_table": "difusao_tipo",
+      "target_column": "dit_cd",
+      "category": "inferred",
+      "confidence": "high",
+      "reason": "Nome da coluna bate com a PK da tabela de destino."
+    },
+    {
+      "source_table": "difusao_interna",
+      "source_column": "din_int_cd",
+      "target_table": "orgaos_internos",
+      "target_column": "int_cd",
+      "category": "inferred",
+      "confidence": "high",
+      "reason": "Nome da coluna bate com a PK da tabela de destino."
+    },
+    {
+      "source_table": "difusao_interna",
+      "source_column": "din_usu_cd",
+      "target_table": "usuarios",
+      "target_column": "usu_cd",
+      "category": "inferred",
+      "confidence": "high",
+      "reason": "Nome da coluna bate com a PK da tabela de destino."
+    },
+    {
+      "source_table": "envolvidos",
+      "source_column": "env_cabelo",
+      "target_table": "aux_cabelo",
+      "target_column": "cab_cd",
+      "category": "manual",
+      "confidence": "medium",
+      "reason": "Codigo de cabelo sugere referencia ao catalogo auxiliar."
+    },
+    {
+      "source_table": "envolvidos",
+      "source_column": "env_den_cd",
+      "target_table": "denuncia",
+      "target_column": "den_cd",
+      "category": "manual",
+      "confidence": "high",
+      "reason": "Coluna usa den_cd; denuncia_com tambem compartilha esse campo, mas a referencia mais provavel e a tabela principal denuncia."
+    },
+    {
+      "source_table": "envolvidos",
+      "source_column": "env_estatura",
+      "target_table": "aux_estatura",
+      "target_column": "est_cd",
+      "category": "manual",
+      "confidence": "medium",
+      "reason": "Codigo de estatura sugere referencia ao catalogo auxiliar."
+    },
+    {
+      "source_table": "envolvidos",
+      "source_column": "env_olhos",
+      "target_table": "aux_olhos",
+      "target_column": "olh_cd",
+      "category": "manual",
+      "confidence": "medium",
+      "reason": "Codigo de olhos sugere referencia ao catalogo auxiliar."
+    },
+    {
+      "source_table": "envolvidos",
+      "source_column": "env_pele",
+      "target_table": "aux_pele",
+      "target_column": "pel_cd",
+      "category": "manual",
+      "confidence": "medium",
+      "reason": "Codigo de pele sugere referencia ao catalogo auxiliar."
+    },
+    {
+      "source_table": "envolvidos",
+      "source_column": "env_porte",
+      "target_table": "aux_porte",
+      "target_column": "prt_cd",
+      "category": "manual",
+      "confidence": "medium",
+      "reason": "Codigo de porte sugere referencia ao catalogo auxiliar."
+    },
+    {
+      "source_table": "envolvidos",
+      "source_column": "env_usu_cd",
+      "target_table": "usuarios",
+      "target_column": "usu_cd",
+      "category": "inferred",
+      "confidence": "high",
+      "reason": "Nome da coluna bate com a PK da tabela de destino."
+    },
+    {
+      "source_table": "item",
+      "source_column": "itm_tpi_cd",
+      "target_table": "item_tipo",
+      "target_column": "tpi_cd",
+      "category": "inferred",
+      "confidence": "high",
+      "reason": "Nome da coluna bate com a PK da tabela de destino."
+    },
+    {
+      "source_table": "item",
+      "source_column": "itm_umt_cd",
+      "target_table": "unidades_metricas",
+      "target_column": "umt_cd",
+      "category": "inferred",
+      "confidence": "high",
+      "reason": "Nome da coluna bate com a PK da tabela de destino."
+    },
+    {
+      "source_table": "item_tipo",
+      "source_column": "tpi_cli_cd",
+      "target_table": "item_classe",
+      "target_column": "cli_cd",
+      "category": "inferred",
+      "confidence": "high",
+      "reason": "Nome da coluna bate com a PK da tabela de destino."
+    },
+    {
+      "source_table": "lock_registro",
+      "source_column": "atd_cd",
+      "target_table": "atendimento",
+      "target_column": "atd_cd",
+      "category": "inferred",
+      "confidence": "high",
+      "reason": "Nome da coluna bate com a PK da tabela de destino."
+    },
+    {
+      "source_table": "lock_registro",
+      "source_column": "den_cd",
+      "target_table": "denuncia",
+      "target_column": "den_cd",
+      "category": "manual",
+      "confidence": "high",
+      "reason": "Coluna usa den_cd; denuncia_com tambem compartilha esse campo, mas a referencia mais provavel e a tabela principal denuncia."
+    },
+    {
+      "source_table": "lock_registro",
+      "source_column": "usu_cd",
+      "target_table": "usuarios",
+      "target_column": "usu_cd",
+      "category": "inferred",
+      "confidence": "high",
+      "reason": "Nome da coluna bate com a PK da tabela de destino."
+    },
+    {
+      "source_table": "log_alteracoes",
+      "source_column": "den_cd",
+      "target_table": "denuncia",
+      "target_column": "den_cd",
+      "category": "manual",
+      "confidence": "high",
+      "reason": "Coluna usa den_cd; denuncia_com tambem compartilha esse campo, mas a referencia mais provavel e a tabela principal denuncia."
+    },
+    {
+      "source_table": "log_alteracoes",
+      "source_column": "usu_cd",
+      "target_table": "usuarios",
+      "target_column": "usu_cd",
+      "category": "inferred",
+      "confidence": "high",
+      "reason": "Nome da coluna bate com a PK da tabela de destino."
+    },
+    {
+      "source_table": "quantifica_resultado",
+      "source_column": "qtf_cli_cd",
+      "target_table": "item_classe",
+      "target_column": "cli_cd",
+      "category": "inferred",
+      "confidence": "high",
+      "reason": "Nome da coluna bate com a PK da tabela de destino."
+    },
+    {
+      "source_table": "quantifica_resultado",
+      "source_column": "qtf_den_cd",
+      "target_table": "denuncia",
+      "target_column": "den_cd",
+      "category": "manual",
+      "confidence": "high",
+      "reason": "Coluna usa den_cd; denuncia_com tambem compartilha esse campo, mas a referencia mais provavel e a tabela principal denuncia."
+    },
+    {
+      "source_table": "quantifica_resultado",
+      "source_column": "qtf_itm_cd",
+      "target_table": "item",
+      "target_column": "itm_cd",
+      "category": "inferred",
+      "confidence": "high",
+      "reason": "Nome da coluna bate com a PK da tabela de destino."
+    },
+    {
+      "source_table": "quantifica_resultado",
+      "source_column": "qtf_tpi_cd",
+      "target_table": "item_tipo",
+      "target_column": "tpi_cd",
+      "category": "inferred",
+      "confidence": "high",
+      "reason": "Nome da coluna bate com a PK da tabela de destino."
+    },
+    {
+      "source_table": "quantifica_resultado",
+      "source_column": "qtf_usu_cd",
+      "target_table": "usuarios",
+      "target_column": "usu_cd",
+      "category": "inferred",
+      "confidence": "high",
+      "reason": "Nome da coluna bate com a PK da tabela de destino."
+    },
+    {
+      "source_table": "resultado_direto",
+      "source_column": "red_den_cd",
+      "target_table": "denuncia",
+      "target_column": "den_cd",
+      "category": "manual",
+      "confidence": "high",
+      "reason": "Coluna usa den_cd; denuncia_com tambem compartilha esse campo, mas a referencia mais provavel e a tabela principal denuncia."
+    },
+    {
+      "source_table": "resultado_direto",
+      "source_column": "red_ext_cd",
+      "target_table": "orgaos_externos",
+      "target_column": "ext_cd",
+      "category": "inferred",
+      "confidence": "high",
+      "reason": "Nome da coluna bate com a PK da tabela de destino."
+    },
+    {
+      "source_table": "resultado_direto",
+      "source_column": "red_oet_cd",
+      "target_table": "orgaos_externos_tipos",
+      "target_column": "oet_cd",
+      "category": "inferred",
+      "confidence": "high",
+      "reason": "Nome da coluna bate com a PK da tabela de destino."
+    },
+    {
+      "source_table": "resultado_direto",
+      "source_column": "red_rtp_cd",
+      "target_table": "resultado_tipo",
+      "target_column": "rtp_cd",
+      "category": "inferred",
+      "confidence": "high",
+      "reason": "Nome da coluna bate com a PK da tabela de destino."
+    },
+    {
+      "source_table": "resultado_direto",
+      "source_column": "red_usu_cd",
+      "target_table": "usuarios",
+      "target_column": "usu_cd",
+      "category": "inferred",
+      "confidence": "high",
+      "reason": "Nome da coluna bate com a PK da tabela de destino."
+    },
+    {
+      "source_table": "resultado_indireto",
+      "source_column": "rei_den_cd",
+      "target_table": "denuncia",
+      "target_column": "den_cd",
+      "category": "manual",
+      "confidence": "high",
+      "reason": "Coluna usa den_cd; denuncia_com tambem compartilha esse campo, mas a referencia mais provavel e a tabela principal denuncia."
+    },
+    {
+      "source_table": "resultado_indireto",
+      "source_column": "rei_usu_cd",
+      "target_table": "usuarios",
+      "target_column": "usu_cd",
+      "category": "inferred",
+      "confidence": "high",
+      "reason": "Nome da coluna bate com a PK da tabela de destino."
+    },
+    {
+      "source_table": "usuarios",
+      "source_column": "usu_tipo",
+      "target_table": "usuarios_tipos",
+      "target_column": "utp_cd",
+      "category": "manual",
+      "confidence": "high",
+      "reason": "Campo de tipo do usuario aponta semanticamente para usuarios_tipos."
+    },
+    {
+      "source_table": "veiculos",
+      "source_column": "den_cd",
+      "target_table": "denuncia",
+      "target_column": "den_cd",
+      "category": "manual",
+      "confidence": "high",
+      "reason": "Coluna usa den_cd; denuncia_com tambem compartilha esse campo, mas a referencia mais provavel e a tabela principal denuncia."
+    },
+    {
+      "source_table": "veiculos",
+      "source_column": "marca",
+      "target_table": "vei_marca",
+      "target_column": "mar_cd",
+      "category": "manual",
+      "confidence": "high",
+      "reason": "Campo sem sufixo _cd, mas o nome coincide com a tabela de marcas."
+    },
+    {
+      "source_table": "veiculos",
+      "source_column": "modelo",
+      "target_table": "vei_modelo",
+      "target_column": "mod_cd",
+      "category": "manual",
+      "confidence": "high",
+      "reason": "Campo sem sufixo _cd, mas o nome coincide com a tabela de modelos."
+    },
+    {
+      "source_table": "xpto_denuncia",
+      "source_column": "dxp_den_cd",
+      "target_table": "denuncia",
+      "target_column": "den_cd",
+      "category": "manual",
+      "confidence": "high",
+      "reason": "Coluna usa den_cd; denuncia_com tambem compartilha esse campo, mas a referencia mais provavel e a tabela principal denuncia."
+    },
+    {
+      "source_table": "xpto_denuncia",
+      "source_column": "dxp_usu_cd",
+      "target_table": "usuarios",
+      "target_column": "usu_cd",
+      "category": "inferred",
+      "confidence": "high",
+      "reason": "Nome da coluna bate com a PK da tabela de destino."
+    },
+    {
+      "source_table": "xpto_denuncia",
+      "source_column": "dxp_xpt_cd",
+      "target_table": "xpto",
+      "target_column": "xpt_cd",
+      "category": "inferred",
+      "confidence": "high",
+      "reason": "Nome da coluna bate com a PK da tabela de destino."
+    }
+  ],
+  "review_items": [
+    {
+      "table": "chaves",
+      "column": "atendimento",
+      "note": "Parece contador/controle operacional, nao necessariamente FK para atendimento."
+    },
+    {
+      "table": "chaves",
+      "column": "denuncia",
+      "note": "Parece contador/controle operacional, nao necessariamente FK para denuncia."
+    },
+    {
+      "table": "denuncia",
+      "column": "den_corr_cd",
+      "note": "Pode apontar para correlatas.cor_cd, mas precisa validar pela aplicacao/dados."
+    },
+    {
+      "table": "denuncia",
+      "column": "den_op_rec",
+      "note": "Pode apontar para usuarios.usu_cd, mas o nome nao prova a relacao sozinho."
+    },
+    {
+      "table": "envolvidos",
+      "column": "env_end_tp",
+      "note": "Campo de tipo/endereco; pode ser dominio interno em vez de FK."
+    },
+    {
+      "table": "veiculos",
+      "column": "com_tipo",
+      "note": "Campo numerico com cara de dominio interno; destino nao fica claro so pelo schema."
+    }
+  ]
+}
