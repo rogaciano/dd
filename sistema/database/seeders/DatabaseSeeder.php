@@ -35,5 +35,9 @@ class DatabaseSeeder extends Seeder
         if ($adminRole && !$user->papeis()->where('papel_id', $adminRole->id)->exists()) {
             $user->papeis()->attach($adminRole->id);
         }
+
+        $this->call([
+            DevDummySeeder::class,
+        ]);
     }
 }
