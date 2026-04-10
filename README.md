@@ -56,8 +56,13 @@ Ainda dentro do container:
 php artisan key:generate
 php artisan migrate:fresh --seed
 ```
-Isso criará a estrutura limpa e já injetará a árvore de papéis, assuntos padrões e os tipos de resultados oficiais. 
-**Usuário de Acesso Padrão criado:** `admin@admin.com` | **Senha:** `admin123`
+Isso criará a estrutura limpa e injetará a árvore de papéis, assuntos padrões e os tipos de resultados oficiais. 
+
+**Usuário de Acesso Padrão:** `admin@admin.com` | **Senha:** `admin123`
+
+> [!TIP]
+> **Dados Fictícios de Desenvolvimento:** Ao rodar as _seeds_ com o arquivo `.env` configurado em `APP_ENV=local`, o sistema executará automaticamente o `DevDummySeeder`. Ele cuidará de gerar e preencher o seu painel com 30 denúncias fakes altamente realistas, completas com endereços, resumos, status mistos e protocolos para que você consiga operar telas e debugar gráficos sem necessitar se conectar a base legada de produção.
+
 
 ---
 
