@@ -15,11 +15,25 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
-
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
+        $this->call([
+            PapeisSeeder::class,
+            GruposAssuntoSeeder::class,
+            AssuntosSeeder::class,
+            TiposResultadoSeeder::class,
         ]);
+
+        $adminRole = \App\Models\Papel::where('slug', 'administrador')->first();
+
+        // Seed a default admin if it doesn't exist
+        $user = User::firstOrCreate([
+            'email' => 'admin@admin.com',
+        ], [
+            'name' => 'Administrador',
+            'password' => bcrypt('admin123'),
+        ]);
+
+        if ($adminRole && !$user->papeis()->where('papel_id', $adminRole->id)->exists()) {
+            $user->papeis()->attach($adminRole->id);
+        }
     }
 }
