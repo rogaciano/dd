@@ -20,4 +20,39 @@ class Denuncia extends Model
     {
         return $this->belongsToMany(Assunto::class, 'denuncia_assuntos', 'denuncia_id', 'assunto_id');
     }
+
+    public function veiculos()
+    {
+        return $this->hasMany(DenunciaVeiculo::class);
+    }
+
+    public function etiquetas()
+    {
+        return $this->belongsToMany(Etiqueta::class, 'denuncia_etiqueta', 'denuncia_id', 'etiqueta_id');
+    }
+
+    protected static function booted(): void
+    {
+        static::creating(function (Denuncia $denuncia) {
+            if (empty($denuncia->protocolo)) {
+                $month = date('m');
+                $year = date('Y');
+                
+                $lastDoc = self::whereYear('created_at', $year)
+                    ->whereMonth('created_at', $month)
+                    ->orderBy('id', 'desc')
+                    ->first();
+                
+                $nextNum = 1;
+                if ($lastDoc) {
+                    $parts = explode('.', $lastDoc->protocolo);
+                    if (isset($parts[0])) {
+                        $nextNum = intval($parts[0]) + 1;
+                    }
+                }
+                
+                $denuncia->protocolo = sprintf('%03d.%s.%s', $nextNum, $month, $year);
+            }
+        });
+    }
 }
