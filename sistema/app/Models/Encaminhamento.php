@@ -6,5 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Encaminhamento extends Model
 {
-    //
+    protected $table = 'encaminhamentos';
+
+    protected $guarded = ['id'];
 }

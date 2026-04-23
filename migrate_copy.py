@@ -145,7 +145,7 @@ def load_config() -> AppConfig:
         mssql_trust_server_certificate=get_env("MSSQL_TRUST_SERVER_CERTIFICATE", "yes"),
         mssql_timeout=int(get_env("MSSQL_TIMEOUT", "30")),
         pg_host=get_env("PGHOST", "localhost"),
-        pg_port=int(get_env("PGPORT", "5678")),
+        pg_port=int(get_env("PGPORT", "5432")),
         pg_database=get_env("PGDATABASE", required=True),
         pg_user=get_env("PGUSER", required=True),
         pg_password=get_env("PGPASSWORD", required=True),

@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\Denuncia;
-use Inertia\Inertia;
+use App\Support\DenunciaCanal;
+use App\Support\DenunciaStatus;
+use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use Illuminate\Validation\Rule;
 
 class PublicDenunciaController extends Controller
 {
@@ -14,28 +16,26 @@ class PublicDenunciaController extends Controller
         $validated = $request->validate([
             'relato' => 'required|string|min:10',
             'resumo' => 'nullable|string|max:255',
-            'canal' => 'nullable|string',
+            'canal' => ['nullable', 'string', Rule::in([DenunciaCanal::WEB, DenunciaCanal::TELEFONE])],
             'local.uf' => 'nullable|string',
             'local.municipio' => 'nullable|string',
             'local.endereco_manual' => 'nullable|string',
         ]);
 
-        $protocolo = 'DD' . date('Ymd') . strtoupper(Str::random(6));
-        $token = hash('sha256', Str::random(40));
+        $token = Str::upper(Str::random(10));
 
         $denuncia = Denuncia::create([
-            'protocolo' => $protocolo,
-            'token_acompanhamento_hash' => $token, // Ideally a hash
-            'canal' => 'portal_web',
+            'token_acompanhamento_hash' => hash('sha256', $token),
+            'canal' => $validated['canal'] ?? DenunciaCanal::WEB,
             'relato' => $validated['relato'],
             'resumo' => $validated['resumo'] ?? null,
-            'ip_hash' => hash('sha256', $request->ip()),
-            'user_agent_hash' => hash('sha256', $request->userAgent()),
+            'ip_hash' => hash('sha256', (string) $request->ip()),
+            'user_agent_hash' => hash('sha256', (string) $request->userAgent()),
             'recebida_em' => now(),
-            'status' => 'recebida'
+            'status' => DenunciaStatus::RECEBIDA,
         ]);
 
-        if (!empty($validated['local'])) {
+        if (! empty($validated['local'])) {
             $denuncia->local()->create([
                 'uf' => $validated['local']['uf'] ?? null,
                 'municipio' => $validated['local']['municipio'] ?? null,
@@ -45,8 +45,9 @@ class PublicDenunciaController extends Controller
 
         return back()->with([
             'success' => true,
-            'protocolo' => $protocolo,
-            'mensagem' => 'Denúncia registrada com sucesso!'
+            'protocolo' => $denuncia->protocolo,
+            'token_acompanhamento' => $token,
+            'mensagem' => 'Denuncia registrada com sucesso!',
         ]);
     }
 }

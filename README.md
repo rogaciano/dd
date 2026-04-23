@@ -1,85 +1,92 @@
-# Sistema de Denúncias Anônimas (Nova V1)
+# Sistema de Denuncias Anonimas
 
-Bem-vindo ao repositório do novo Sistema de Denúncias Anônimas! Este projeto foi modernizado utilizando a arquitetura de **Monolito Moderno** com foco em segurança, anonimato e alta performance. 
+Projeto Laravel para a nova V1 do sistema de denuncias, com duas bases PostgreSQL locais:
 
-*Para a visão arquitetural completa de bancos, stack e modelagem, consulte as documentações contidas na pasta principal: `BANCO_V1.md`, `MODELO_DOMINIO.md`, `STACK.md` e `IMPORTACAO_E_EVOLUCAO.md`.*
+- `disque_denuncia_legado`: espelho recarregavel do SQL Server 2008
+- `disque_denuncia_novo`: base da aplicacao nova
 
----
+Documentacao complementar:
 
-## 🚀 Tecnologias
+- `STACK.md`
+- `V1_ESCOPO.md`
+- `MODELO_DOMINIO.md`
+- `BANCO_V1.md`
+- `IMPORTACAO_E_EVOLUCAO.md`
 
-- **Backend:** Laravel 11.x (PHP 8.3)
-- **Frontend:** Vue.js 3 + Inertia.js
-- **Estilização:** Tailwind CSS v4 (Design system Glassmorphism)
-- **Banco de Dados:** PostgreSQL 16
-- **Cache/Filas:** Redis
-- **Infraestrutura Local:** Docker & Docker Compose (`php:8.3-apache`)
+## Stack atual
 
----
+- Backend: Laravel 13 + PHP 8.3
+- Frontend: Vue 3 + Inertia
+- Estilo: Tailwind + Vite
+- Banco: PostgreSQL 16
+- Cache e filas: Redis
+- Infra local: Docker Compose
 
-## 💻 Onboarding: Como Rodar Localmente
+## Subir o ambiente
 
-Todo o ambiente está empacotado no `docker-compose.yml`. Siga os passos abaixo, em sua máquina, para subir a aplicação em 5 minutos:
+1. Copie o ambiente da aplicacao:
 
-### 1. Clonar Repositório e Configurar Variáveis
 ```bash
-git clone https://github.com/rogaciano/dd.git
-cd dd
 cp sistema/.env.example sistema/.env
 ```
-*(As credenciais padrões do PostgreSQL e Redis do Docker já estão configuradas por padrão no `.env` original)*
 
-### 2. Subir os Containers
+2. Suba os containers:
+
 ```bash
-docker-compose up -d --build
+docker compose up -d --build
 ```
-Isso criará 3 serviços:
-1. `php_apache_sistema` (A aplicação exposta na porta HTTP **8080**)
-2. `postgres` (Bancos locais na porta **5432**)
-3. `redis` (Filas e Cache na porta **6379**)
 
-### 3. Instalar as Dependências no Container
-Acesse o container principal do PHP para rodar os pacotes de backend e frontend:
+3. Instale dependencias e prepare a aplicacao:
+
 ```bash
 docker exec -it php_apache_sistema bash
-
-# Dentro do container:
 cd /var/www/html/sistema
 composer install
 npm install
 npm run build
-```
-
-### 4. Preparar Regras Iniciais e Banco de Dados
-Ainda dentro do container:
-```bash
 php artisan key:generate
-php artisan migrate:fresh --seed
+php artisan migrate --seed
 ```
-Isso criará a estrutura limpa e injetará a árvore de papéis, assuntos padrões e os tipos de resultados oficiais. 
 
-**Usuário de Acesso Padrão:** `admin@admin.com` | **Senha:** `admin123`
+Servicos locais:
 
-> [!TIP]
-> **Dados Fictícios de Desenvolvimento:** Ao rodar as _seeds_ com o arquivo `.env` configurado em `APP_ENV=local`, o sistema executará automaticamente o `DevDummySeeder`. Ele cuidará de gerar e preencher o seu painel com 30 denúncias fakes altamente realistas, completas com endereços, resumos, status mistos e protocolos para que você consiga operar telas e debugar gráficos sem necessitar se conectar a base legada de produção.
+- App: `http://localhost:8080`
+- PostgreSQL: `localhost:5432`
+- Redis: `localhost:6379`
 
+Usuario padrao de desenvolvimento:
 
----
+- Email: `admin@admin.com`
+- Senha: `admin123`
 
-## 🏛 Lidando com a Base Legada (Frente B)
-Como lidamos com anos de dados históricos do SQL Server, adotamos uma estratégia de 2 vias. Existe um espelho do BD Antigo nomeado de `disque_denuncia_legado`. 
+## Testes
 
-Para projetar os dados do sistema legado para a nossa modelagem da V1 localmente, existe um comando Artisan pronto com Upsert que constrói de forma inteligente o Protocolo (respeitando o layout `seq.mês.ano`) e insere na nova modelagem sem causar duplicação:
+O suite usa SQLite para testes. A imagem Docker da aplicacao instala `pdo_sqlite`, entao o caminho recomendado e:
 
 ```bash
-docker exec php_apache_sistema php artisan legado:importar-denuncias
+docker exec -it php_apache_sistema bash
+cd /var/www/html/sistema
+php artisan test
 ```
 
----
+Se o PHP local nao tiver `pdo_sqlite`, os testes com banco serao ignorados.
 
-## Estrutura de Rotas e Endpoints
-- **`/`**: Portal Anônimo de Denúncias Público (Vue/Inertia).
-- **`/dashboard`**: Painel Administrativo de Controle e Triagem.
-- **`/horizon`**: Painel de Monitoramento de Filas e Jobs assíncronos. 
+## Fluxo do legado
 
-Em caso de dúvidas na modelagem do domínio, sinta-se livre para debater nas PRs embasando suas ideias no `MODELO_DOMINIO.md`!
+1. Carregue o SQL Server 2008 no banco `disque_denuncia_legado` usando os scripts Python da raiz.
+2. Projete o legado para o modelo novo com os comandos Artisan.
+
+Comandos principais:
+
+```bash
+docker exec -it php_apache_sistema bash
+cd /var/www/html/sistema
+php artisan legado:importar-denuncias
+php artisan legado:importar-veiculos
+```
+
+## Observacoes de arquitetura
+
+- O espelho legado e descartavel e nao deve receber ajuste manual.
+- O banco novo evolui por migrations, seeders e comandos de projecao controlados.
+- Dados complementares da V1 devem ficar separados da carga legado para permitir reimportacao segura.

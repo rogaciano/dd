@@ -3,14 +3,16 @@ FROM php:8.3-apache
 # Update and install system packages
 RUN apt-get update && apt-get install -y \
     libpq-dev \
+    libsqlite3-dev \
     libzip-dev \
+    sqlite3 \
     unzip \
     curl \
     git \
  && rm -rf /var/lib/apt/lists/*
 
-# Install PHP extensions: pdo_pgsql for postgres, pcntl for horizon, zip for composer
-RUN docker-php-ext-install pdo_pgsql pcntl zip
+# Install PHP extensions used by the app and test suite
+RUN docker-php-ext-install pdo_pgsql pdo_sqlite pcntl zip
 
 # Install Redis extension
 RUN pecl install redis \

@@ -2,6 +2,8 @@
 
 namespace Database\Factories;
 
+use App\Support\DenunciaCanal;
+use App\Support\DenunciaStatus;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 
@@ -9,13 +11,16 @@ class DenunciaFactory extends Factory
 {
     public function definition(): array
     {
-        $status = $this->faker->randomElement(['recebida', 'triagem', 'em_andamento', 'encerrada']);
-        $protocolo = Str::upper($this->faker->bothify('?##')). '.' . str_pad($this->faker->numberBetween(1, 12), 2, '0', STR_PAD_LEFT) . '.2026';
-        
+        $status = $this->faker->randomElement([
+            DenunciaStatus::RECEBIDA,
+            DenunciaStatus::TRIAGEM,
+            DenunciaStatus::EM_ANDAMENTO,
+            DenunciaStatus::ENCERRADA,
+        ]);
+
         return [
-            'protocolo' => $protocolo,
             'token_acompanhamento_hash' => hash('sha256', Str::random(32)),
-            'canal' => 'web',
+            'canal' => DenunciaCanal::WEB,
             'status' => $status,
             'prioridade' => $this->faker->randomElement(['normal', 'alta']),
             'urgente' => $this->faker->boolean(20),

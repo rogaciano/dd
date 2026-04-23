@@ -2,89 +2,146 @@
 
 namespace App\Console\Commands;
 
+use App\Models\Denuncia;
+use App\Models\DenunciaVeiculo;
+use App\Models\VeiculoMarca;
+use App\Models\VeiculoModelo;
 use Illuminate\Console\Attributes\Description;
 use Illuminate\Console\Attributes\Signature;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
-use App\Models\Denuncia;
-use App\Models\VeiculoMarca;
-use App\Models\VeiculoModelo;
-use App\Models\DenunciaVeiculo;
 use Illuminate\Support\Facades\Schema;
 
 #[Signature('legado:importar-veiculos')]
-#[Description('Importa veículos da base legada.')]
+#[Description('Importa veiculos da base legada.')]
 class ImportLegadoVeiculos extends Command
 {
     public function handle()
     {
-        $this->info("Iniciando importação de Veículos...");
+        $this->info('Iniciando importacao de veiculos...');
 
         $dbLegado = DB::connection('pgsql_legado');
+        $dbNovo = DB::connection();
 
         try {
-            DB::statement('SET session_replication_role = replica;');
-            
-            $this->info("Importando marcas...");
-            $marcas = $dbLegado->table('vei_marca')->get();
-            $marcaMap = []; 
-            
-            foreach ($marcas as $m) {
-                $marca = VeiculoMarca::updateOrCreate(
-                    ['nome' => trim($m->mar_ds)]
-                );
-                $marcaMap[$m->mar_cd] = $marca->id;
+            if ($dbNovo->getDriverName() === 'pgsql') {
+                $dbNovo->statement('SET session_replication_role = replica;');
             }
 
-            $this->info("Importando modelos...");
-            $modeloMap = [];
-            if (Schema::connection('pgsql_legado')->hasTable('vei_modelo')) {
-                $modelos = $dbLegado->table('vei_modelo')->get();
-                foreach ($modelos as $mo) {
-                    $modelo = VeiculoModelo::updateOrCreate(
-                        ['nome' => trim($mo->mod_ds)],
-                        ['veiculo_marca_id' => $marcaMap[$mo->mod_mar_cd] ?? null]
-                    );
-                    $modeloMap[$mo->mod_cd] = $modelo->id;
-                }
-            }
+            $marcaMap = $this->importarMarcas($dbLegado);
+            $modeloMap = $this->importarModelos($dbLegado, $marcaMap);
 
-            $this->info("Importando veículos...");
-            $veiculos = $dbLegado->table('veiculos')->get();
             $count = 0;
+            $veiculos = $dbLegado->table('veiculos')->get();
 
-            foreach ($veiculos as $v) {
-                $denuncia = Denuncia::where('id', $v->den_cd)->first(); 
+            foreach ($veiculos as $veiculoLegado) {
+                $denuncia = Denuncia::query()
+                    ->where('origem_legado_tabela', 'denuncia')
+                    ->where('origem_legado_id', $veiculoLegado->den_cd)
+                    ->first();
 
-                if ($denuncia) {
-                    DenunciaVeiculo::updateOrCreate(
-                        [
-                            'denuncia_id' => $denuncia->id,
-                            'placa' => trim($v->placa), 
-                        ],
-                        [
-                            'veiculo_marca_id' => $marcaMap[$v->marca] ?? null,
-                            'veiculo_modelo_id' => $modeloMap[$v->modelo ?? ''] ?? null,
-                            'cor' => trim($v->cor),
-                            'ano_modelo' => (int) $v->ano_mod ?: null,
-                            'ano_fabricacao' => (int) $v->ano_fab ?: null,
-                            'chassis' => trim($v->chassis),
-                            'municipio' => trim($v->municipio),
-                            'uf' => trim($v->uf),
-                            'proprietario' => trim($v->proprietario),
-                            'detalhes' => trim($v->detalhes),
-                        ]
-                    );
-                    $count++;
+                if (! $denuncia) {
+                    continue;
                 }
+
+                DenunciaVeiculo::updateOrCreate(
+                    [
+                        'denuncia_id' => $denuncia->id,
+                        'placa' => $this->nullableTrim($veiculoLegado->placa),
+                    ],
+                    [
+                        'veiculo_marca_id' => $marcaMap[$veiculoLegado->marca] ?? null,
+                        'veiculo_modelo_id' => $modeloMap[$veiculoLegado->modelo] ?? null,
+                        'cor' => $this->nullableTrim($veiculoLegado->cor),
+                        'ano_modelo' => $this->nullableInt($veiculoLegado->ano_mod),
+                        'ano_fabricacao' => $this->nullableInt($veiculoLegado->ano_fab),
+                        'chassis' => $this->nullableTrim($veiculoLegado->chassis),
+                        'municipio' => $this->nullableTrim($veiculoLegado->municipio),
+                        'uf' => $this->nullableTrim($veiculoLegado->uf),
+                        'proprietario' => $this->nullableTrim($veiculoLegado->proprietario),
+                        'detalhes' => $this->nullableTrim($veiculoLegado->detalhes),
+                    ]
+                );
+
+                $count++;
             }
 
-            DB::statement('SET session_replication_role = DEFAULT;');
-            $this->info("Importação de veículos finalizada! {$count} veículos importados.");
-            
+            $this->info("Importacao de veiculos finalizada! {$count} veiculos importados.");
+
+            return self::SUCCESS;
         } catch (\Exception $e) {
-            DB::statement('SET session_replication_role = DEFAULT;');
-            $this->error("Erro de importação: " . $e->getMessage());
+            $this->error('Erro de importacao: '.$e->getMessage());
+
+            return self::FAILURE;
+        } finally {
+            if ($dbNovo->getDriverName() === 'pgsql') {
+                $dbNovo->statement('SET session_replication_role = DEFAULT;');
+            }
         }
+    }
+
+    private function importarMarcas($dbLegado): array
+    {
+        $this->info('Importando marcas...');
+
+        $marcaMap = [];
+
+        foreach ($dbLegado->table('vei_marca')->get() as $marcaLegada) {
+            $nomeMarca = $this->nullableTrim($marcaLegada->mar_ds);
+
+            if (! $nomeMarca) {
+                continue;
+            }
+
+            $marca = VeiculoMarca::updateOrCreate([
+                'nome' => $nomeMarca,
+            ]);
+
+            $marcaMap[$marcaLegada->mar_cd] = $marca->id;
+        }
+
+        return $marcaMap;
+    }
+
+    private function importarModelos($dbLegado, array $marcaMap): array
+    {
+        $this->info('Importando modelos...');
+
+        $modeloMap = [];
+
+        if (! Schema::connection('pgsql_legado')->hasTable('vei_modelo')) {
+            return $modeloMap;
+        }
+
+        foreach ($dbLegado->table('vei_modelo')->get() as $modeloLegado) {
+            $nomeModelo = $this->nullableTrim($modeloLegado->mod_ds);
+
+            if (! $nomeModelo) {
+                continue;
+            }
+
+            $modelo = VeiculoModelo::updateOrCreate(
+                ['nome' => $nomeModelo],
+                ['veiculo_marca_id' => $marcaMap[$modeloLegado->mar_cd] ?? null],
+            );
+
+            $modeloMap[$modeloLegado->mod_cd] = $modelo->id;
+        }
+
+        return $modeloMap;
+    }
+
+    private function nullableInt(mixed $value): ?int
+    {
+        $value = (int) $value;
+
+        return $value > 0 ? $value : null;
+    }
+
+    private function nullableTrim(mixed $value): ?string
+    {
+        $value = trim((string) $value);
+
+        return $value !== '' ? $value : null;
     }
 }

@@ -2,34 +2,41 @@
 
 namespace App\Console\Commands;
 
+use App\Models\Denuncia;
+use App\Models\DenunciaLocal;
+use App\Support\DenunciaCanal;
+use App\Support\DenunciaStatus;
+use Carbon\Carbon;
 use Illuminate\Console\Attributes\Description;
 use Illuminate\Console\Attributes\Signature;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 
 #[Signature('legado:importar-denuncias')]
-#[Description('Importa denúncias da base de legado espelhada')]
+#[Description('Importa denuncias da base de legado espelhada')]
 class ImportarDenunciasLegado extends Command
 {
     public function handle()
     {
-        $this->info("Iniciando importacao de denuncias do banco legado...");
+        $this->info('Iniciando importacao de denuncias do banco legado...');
 
         try {
-            \Illuminate\Support\Facades\DB::connection('pgsql_legado')->getPdo();
+            DB::connection('pgsql_legado')->getPdo();
         } catch (\Exception $e) {
-            $this->error("Erro de conexao com legado: " . $e->getMessage());
-            return;
+            $this->error('Erro de conexao com legado: '.$e->getMessage());
+
+            return self::FAILURE;
         }
 
-        $totalEncontrado = \Illuminate\Support\Facades\DB::connection('pgsql_legado')->table('denuncia')->count();
+        $totalEncontrado = DB::connection('pgsql_legado')->table('denuncia')->count();
         $this->info("Total de registros a analisar: {$totalEncontrado}");
 
         $bar = $this->output->createProgressBar($totalEncontrado);
 
-        // Fetch using chunks to avoid memory issues
-        \Illuminate\Support\Facades\DB::connection('pgsql_legado')->table('denuncia')
+        DB::connection('pgsql_legado')->table('denuncia')
             ->orderBy('den_cd')
-            ->chunk(1000, function ($legadas) use ($bar) {
+            ->chunk(1000, function ($legadas) use ($bar): void {
                 foreach ($legadas as $legada) {
                     $this->importarLinha($legada);
                     $bar->advance();
@@ -38,53 +45,49 @@ class ImportarDenunciasLegado extends Command
 
         $bar->finish();
         $this->newLine();
-        $this->info("Importacao Finalizada!");
+        $this->info('Importacao finalizada!');
+
+        return self::SUCCESS;
     }
 
-    private function importarLinha($legada)
+    private function importarLinha(object $legada): void
     {
-        $dataRecebimento = $legada->den_dt_rec ? \Carbon\Carbon::parse($legada->den_dt_rec) : now();
+        $dataRecebimento = $legada->den_dt_rec ? Carbon::parse($legada->den_dt_rec) : now();
 
-        $mes = str_pad($dataRecebimento->month, 2, '0', STR_PAD_LEFT);
+        $mes = str_pad((string) $dataRecebimento->month, 2, '0', STR_PAD_LEFT);
         $ano = $dataRecebimento->year;
         $sequencia = $legada->den_numero;
         $protocolo = "{$sequencia}.{$mes}.{$ano}";
 
-        $denuncia = \App\Models\Denuncia::where('origem_legado_id', $legada->den_cd)->first();
-
-        if (!$denuncia) {
-            $denuncia = new \App\Models\Denuncia();
-            $denuncia->origem_legado_id = $legada->den_cd;
-            $denuncia->origem_legado_tabela = 'denuncia';
-        }
+        $denuncia = Denuncia::firstOrNew([
+            'origem_legado_tabela' => 'denuncia',
+            'origem_legado_id' => $legada->den_cd,
+        ]);
 
         $denuncia->importado_em = now();
-        
-        if (!$denuncia->exists) {
-             // Caso na migracao existam repetidos gerando colisoes, colocamos um random pra previnir erro fatal e o ID do protocolo garante que a chave unica nao falhe
-             $baseProtocolo = \App\Models\Denuncia::where('protocolo', $protocolo)->exists() ? $protocolo . '-' . \Illuminate\Support\Str::random(4) : $protocolo;
-             $denuncia->protocolo = $baseProtocolo;
-             $denuncia->token_acompanhamento_hash = hash('sha256', \Illuminate\Support\Str::random(32));
-             $denuncia->canal = 'importacao';
-             $denuncia->status = 'encerrada';
+
+        if (! $denuncia->exists) {
+            $baseProtocolo = Denuncia::where('protocolo', $protocolo)->exists()
+                ? $protocolo.'-'.Str::random(4)
+                : $protocolo;
+
+            $denuncia->protocolo = $baseProtocolo;
+            $denuncia->token_acompanhamento_hash = hash('sha256', Str::random(32));
+            $denuncia->canal = DenunciaCanal::IMPORTACAO;
+            $denuncia->status = DenunciaStatus::ENCERRADA;
         }
-        
+
         $denuncia->prioridade = 'normal';
         $denuncia->urgente = false;
-        
-        $resumo = \Illuminate\Support\Str::limit(strip_tags((string)$legada->den_texto), 250);
-        $denuncia->resumo = $resumo ?: 'Importado do Legado';
-        $denuncia->relato = (string)$legada->den_texto;
+        $denuncia->resumo = Str::limit(strip_tags((string) $legada->den_texto), 250) ?: 'Importado do legado';
+        $denuncia->relato = (string) $legada->den_texto;
         $denuncia->recebida_em = $dataRecebimento;
         $denuncia->enviada_em = $dataRecebimento;
-
         $denuncia->save();
 
-        $local = \App\Models\DenunciaLocal::where('denuncia_id', $denuncia->id)->first();
-        if (!$local) {
-            $local = new \App\Models\DenunciaLocal();
-            $local->denuncia_id = $denuncia->id;
-        }
+        $local = DenunciaLocal::firstOrNew([
+            'denuncia_id' => $denuncia->id,
+        ]);
 
         $local->pais_codigo = 'BR';
         $local->uf = $legada->den_logr_uf;
@@ -97,7 +100,6 @@ class ImportarDenunciasLegado extends Command
         $local->complemento = $legada->den_logr_cmpl;
         $local->cep = $legada->den_logr_cep;
         $local->referencia = $legada->den_loc_ref;
-        
         $local->save();
     }
 }

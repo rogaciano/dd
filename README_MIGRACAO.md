@@ -25,7 +25,7 @@ Com a estrutura atual do `docker-compose`, use:
 Para os scripts deste diretorio, o destino esperado e:
 
 - `PGHOST=localhost`
-- `PGPORT=5678`
+- `PGPORT=5432`
 - `PGDATABASE=disque_denuncia_legado`
 - `PGSCHEMA=public`
 
@@ -50,7 +50,7 @@ Se voce ja estava usando a configuracao antiga, atualize o `.env` para apontar p
 
 ```env
 PGHOST=localhost
-PGPORT=5678
+PGPORT=5432
 PGDATABASE=disque_denuncia_legado
 PGUSER=postgres
 PGPASSWORD=postgres

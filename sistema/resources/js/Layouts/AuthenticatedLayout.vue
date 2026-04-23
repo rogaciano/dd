@@ -39,6 +39,12 @@ const showingNavigationDropdown = ref(false);
                                 >
                                     Dashboard
                                 </NavLink>
+                                <NavLink
+                                    :href="route('denuncias.create')"
+                                    :active="route().current('denuncias.create')"
+                                >
+                                    Nova Denúncia
+                                </NavLink>
                             </div>
                         </div>
 
@@ -145,6 +151,12 @@ const showingNavigationDropdown = ref(false);
                             :active="route().current('dashboard')"
                         >
                             Dashboard
+                        </ResponsiveNavLink>
+                        <ResponsiveNavLink
+                            :href="route('denuncias.create')"
+                            :active="route().current('denuncias.create')"
+                        >
+                            Nova Denúncia
                         </ResponsiveNavLink>
                     </div>
 

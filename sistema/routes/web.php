@@ -1,11 +1,11 @@
 <?php
 
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\DenunciaController;
 use App\Http\Controllers\ProfileController;
-use Illuminate\Foundation\Application;
+use App\Http\Controllers\PublicDenunciaController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
-
-use App\Http\Controllers\PublicDenunciaController;
 
 Route::get('/', function () {
     return Inertia::render('Welcome', [
@@ -15,17 +15,14 @@ Route::get('/', function () {
 
 Route::post('/denunciar', [PublicDenunciaController::class, 'store'])->name('denuncia.store');
 
-Route::get('/dashboard', function () {
-    $denuncias = App\Models\Denuncia::with('local')->latest()->get();
-    return Inertia::render('Dashboard', [
-        'denuncias' => $denuncias
-    ]);
-})->middleware(['auth', 'verified'])->name('dashboard');
+Route::get('/dashboard', DashboardController::class)
+    ->middleware(['auth', 'verified'])
+    ->name('dashboard');
 
 Route::middleware('auth')->group(function () {
-    Route::get('/denuncias/create', [App\Http\Controllers\DenunciaController::class, 'create'])->name('denuncias.create');
-    Route::post('/denuncias', [App\Http\Controllers\DenunciaController::class, 'store'])->name('denuncias.store');
-    
+    Route::get('/denuncias/create', [DenunciaController::class, 'create'])->name('denuncias.create');
+    Route::post('/denuncias', [DenunciaController::class, 'store'])->name('denuncias.store');
+
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
