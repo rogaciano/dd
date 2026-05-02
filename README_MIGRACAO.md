@@ -183,3 +183,35 @@ python migrate.py --validate-counts
 ## Proximo passo recomendado
 
 Se o destino realmente puder espelhar a origem, use primeiro `convert_schema.py` + `migrate_copy.py`. Reserve o `migrate.py` apenas para as tabelas que exigirem ajuste manual.
+
+## Carga do legado no sistema novo
+
+Depois que o banco `disque_denuncia_legado` estiver carregado com o espelho 1:1, a aplicacao Laravel possui um comando para popular o banco novo com dados reais para teste de carga:
+
+```powershell
+cd sistema
+php artisan migrate:fresh --seed --force
+php artisan legado:importar-carga --truncate
+```
+
+Para validar rapidamente antes da carga completa:
+
+```powershell
+php artisan legado:importar-carga --truncate --limit=10
+```
+
+O comando importa, quando as tabelas existem no espelho:
+
+- classes e tipos de assunto para `grupos_assunto` e `assuntos`
+- orgaos internos/externos para `orgaos`
+- tipos de resultado
+- denuncias, locais, assuntos vinculados, envolvidos e veiculos
+- difusoes internas/externas como encaminhamentos
+- resultados diretos/indiretos e quantificacoes
+- complementos de denuncia como movimentacoes internas
+
+Opcoes uteis:
+
+- `--truncate`: limpa a carga importada antes de recarregar
+- `--seed`: executa os seeders basicos antes de importar
+- `--limit=N`: importa apenas N denuncias, filtrando tambem os filhos dessas denuncias

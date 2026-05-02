@@ -254,10 +254,15 @@ Colunas principais:
 - `sexo varchar(20) null`
 - `idade_estimada smallint null`
 - `cor_pele varchar(40) null`
+- `cor_pele_id bigint null`
 - `estatura varchar(40) null`
+- `faixa_estatura_id bigint null`
 - `olhos varchar(40) null`
+- `cor_olhos_id bigint null`
 - `cabelo varchar(40) null`
+- `tipo_cabelo_id bigint null`
 - `porte_fisico varchar(40) null`
+- `porte_fisico_id bigint null`
 - `sinais_particulares text null`
 - `observacoes text null`
 - `descricao_endereco text null`
@@ -271,6 +276,11 @@ Checks sugeridos:
 FKs:
 
 - `denuncia_id -> denuncias.id`
+- `cor_pele_id -> cores_pele.id`
+- `faixa_estatura_id -> faixas_estatura.id`
+- `cor_olhos_id -> cores_olhos.id`
+- `tipo_cabelo_id -> tipos_cabelo.id`
+- `porte_fisico_id -> portes_fisicos.id`
 
 Indices:
 
@@ -278,6 +288,11 @@ Indices:
 - `index(papel_no_caso)`
 - `index(nome)`
 - `index(apelido)`
+
+Observacoes:
+
+- os campos textuais continuam uteis para fallback manual e snapshot importado
+- os campos `*_id` estruturam os catalogos fisicos herdados do legado
 
 ---
 
@@ -434,29 +449,38 @@ Finalidade:
 
 - encaminhamentos da denuncia
 
+Observacao de modelagem:
+
+- `interno` e `externo` devem ser inferidos pelo `orgao`
+- `tipo` textual fica apenas como compatibilidade temporaria
+- o tipo estruturado fica em `tipo_encaminhamento_id`
+
 Colunas principais:
 
 - `id bigint pk`
 - `denuncia_id bigint not null`
 - `orgao_id bigint not null`
-- `tipo varchar(20) not null`
+- `tipo_encaminhamento_id bigint null`
+- `tipo varchar(120) null`
 - `status varchar(20) not null`
 - `enviado_em timestamptz not null`
 - `prazo_em timestamptz null`
 - `observacoes text null`
 - `criado_por_usuario_id bigint not null`
+- `origem_legado_id bigint null`
+- `origem_legado_tabela varchar(80) null`
 - `created_at timestamptz not null`
 - `updated_at timestamptz not null`
 
 Checks sugeridos:
 
-- `tipo in ('operacional', 'informativo')`
 - `status in ('pendente', 'enviado', 'confirmado', 'concluido', 'cancelado')`
 
 FKs:
 
 - `denuncia_id -> denuncias.id`
 - `orgao_id -> orgaos.id`
+- `tipo_encaminhamento_id -> tipos_encaminhamento.id`
 - `criado_por_usuario_id -> usuarios.id`
 
 Indices:
@@ -464,6 +488,46 @@ Indices:
 - `index(denuncia_id, status)`
 - `index(orgao_id, status)`
 - `index(enviado_em desc)`
+
+### `tipos_encaminhamento`
+
+Finalidade:
+
+- catalogo estruturado que absorve `difusao_tipo`
+
+Colunas principais:
+
+- `id bigint pk`
+- `nome varchar(160) not null`
+- `slug varchar(160) not null unique`
+- `ativo boolean not null default true`
+- `ordem_exibicao integer not null default 0`
+- `origem_legado_id integer null unique`
+- `created_at timestamptz not null`
+- `updated_at timestamptz not null`
+
+### `denuncia_vinculos`
+
+Finalidade:
+
+- vinculos entre denuncias relacionadas
+
+Colunas principais:
+
+- `id bigint pk`
+- `denuncia_origem_id bigint not null`
+- `denuncia_relacionada_id bigint not null`
+- `tipo varchar(40) not null`
+- `observacoes text null`
+- `origem_legado_id bigint null`
+- `origem_legado_tabela varchar(80) null`
+- `created_at timestamptz not null`
+- `updated_at timestamptz not null`
+
+FKs:
+
+- `denuncia_origem_id -> denuncias.id`
+- `denuncia_relacionada_id -> denuncias.id`
 
 ### `denuncia_movimentacoes`
 
@@ -589,20 +653,54 @@ Colunas principais:
 
 - `id bigint pk`
 - `resultado_id bigint not null`
+- `classe_item_resultado_id bigint null`
+- `tipo_item_resultado_id bigint null`
+- `item_resultado_id bigint null`
 - `rotulo varchar(160) not null`
 - `quantidade numeric(14,2) not null`
+- `unidade_medida_id bigint null`
 - `unidade varchar(60) not null`
 - `observacoes text null`
+- `origem_legado_id bigint null`
+- `origem_legado_tabela varchar(80) null`
 - `created_at timestamptz not null`
 - `updated_at timestamptz not null`
 
 FKs:
 
 - `resultado_id -> resultados.id`
+- `classe_item_resultado_id -> classes_item_resultado.id`
+- `tipo_item_resultado_id -> tipos_item_resultado.id`
+- `item_resultado_id -> itens_resultado.id`
+- `unidade_medida_id -> unidades_medida.id`
 
 Indices:
 
 - `index(resultado_id)`
+
+### `classes_item_resultado`
+
+Finalidade:
+
+- catalogo das classes herdadas de `item_classe`
+
+### `tipos_item_resultado`
+
+Finalidade:
+
+- catalogo dos tipos herdados de `item_tipo`
+
+### `itens_resultado`
+
+Finalidade:
+
+- catalogo dos itens herdados de `item`
+
+### `unidades_medida`
+
+Finalidade:
+
+- catalogo das unidades herdadas de `unidades_metricas`
 
 ### `logs_auditoria`
 

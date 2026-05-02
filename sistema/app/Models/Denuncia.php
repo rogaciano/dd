@@ -36,6 +36,26 @@ class Denuncia extends Model
         return $this->belongsToMany(Etiqueta::class, 'denuncia_etiqueta', 'denuncia_id', 'etiqueta_id');
     }
 
+    public function encaminhamentos()
+    {
+        return $this->hasMany(Encaminhamento::class);
+    }
+
+    public function resultados()
+    {
+        return $this->hasMany(Resultado::class);
+    }
+
+    public function vinculosOrigem()
+    {
+        return $this->hasMany(DenunciaVinculo::class, 'denuncia_origem_id');
+    }
+
+    public function vinculosRelacionados()
+    {
+        return $this->hasMany(DenunciaVinculo::class, 'denuncia_relacionada_id');
+    }
+
     protected function casts(): array
     {
         return [

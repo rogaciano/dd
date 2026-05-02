@@ -124,10 +124,11 @@
                         <div>
                             <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Canal de Recebimento</label>
                             <select v-model="form.canal" class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white shadow-sm focus:border-red-500 focus:ring-red-500">
-                                <option value="1">Telefone (Disque-Denúncia)</option>
-                                <option value="2">WhatsApp / Linha Verde</option>
-                                <option value="3">App Web</option>
+                                <option value="interno">Atendimento interno</option>
+                                <option value="telefone">Telefone / WhatsApp</option>
+                                <option value="web">Portal web</option>
                             </select>
+                            <p v-if="form.errors.canal" class="mt-1 text-sm text-red-600 dark:text-red-400">{{ form.errors.canal }}</p>
                         </div>
                         <div>
                             <label class="inline-flex items-center mt-6">
@@ -141,6 +142,19 @@
                                 <span class="ml-2 font-bold text-gray-700 dark:text-gray-300">Bloquear Denúncia (Sigilo Máximo)</span>
                             </label>
                         </div>
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Assunto principal</label>
+                        <select v-model="form.assunto_id" required class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white shadow-sm focus:border-red-500 focus:ring-red-500">
+                            <option value="">Selecione o assunto principal da denúncia</option>
+                            <optgroup v-for="grupo in gruposAssunto" :key="grupo.id" :label="grupo.nome">
+                                <option v-for="assunto in grupo.assuntos" :key="assunto.id" :value="assunto.id">
+                                    {{ assunto.nome }}
+                                </option>
+                            </optgroup>
+                        </select>
+                        <p v-if="form.errors.assunto_id" class="mt-1 text-sm text-red-600 dark:text-red-400">{{ form.errors.assunto_id }}</p>
                     </div>
 
                     <!-- Etiquetas Dinâmicas -->
@@ -360,13 +374,14 @@ const form = useForm({
     bairro: '',
     ponto_referencia: '',
     classificacao: 'NORMAL',
+    assunto_id: '',
     difusaoImediata: false,
     bloqueada: false,
     comunicacao_interna: '',
     envolvidos: [],
     veiculos: [],
     etiquetas: [],
-    canal: '1',
+    canal: 'interno',
 });
 
 const exibirModalEnvolvido = ref(false);

@@ -91,6 +91,16 @@ def parse_args() -> argparse.Namespace:
         help="Lista as tabelas na ordem de carga e encerra.",
     )
     parser.add_argument(
+        "--audit",
+        action="store_true",
+        help="Compara as tabelas do schema-file com as tabelas existentes no PostgreSQL e imprime as ausentes.",
+    )
+    parser.add_argument(
+        "--audit-columns",
+        action="store_true",
+        help="Quando usado com --audit, tambem compara colunas por tabela.",
+    )
+    parser.add_argument(
         "--dry-run",
         action="store_true",
         help="Le e processa as linhas da origem, mas nao grava no PostgreSQL.",
@@ -470,6 +480,86 @@ def check_target_tables_exist(cursor: Any, config: AppConfig, tables: list[Table
         )
 
 
+def fetch_existing_tables(cursor: Any, schema: str) -> set[str]:
+    cursor.execute(
+        """
+        SELECT table_name
+        FROM information_schema.tables
+        WHERE table_schema = %s
+        """,
+        (schema,),
+    )
+    return {row[0] for row in cursor.fetchall()}
+
+
+def fetch_existing_columns(cursor: Any, schema: str) -> dict[str, set[str]]:
+    cursor.execute(
+        """
+        SELECT table_name, column_name
+        FROM information_schema.columns
+        WHERE table_schema = %s
+        """,
+        (schema,),
+    )
+    result: dict[str, set[str]] = defaultdict(set)
+    for table_name, column_name in cursor.fetchall():
+        result[str(table_name)].add(str(column_name))
+    return result
+
+
+def audit_postgres_schema(
+    target_conn: Any, config: AppConfig, tables: list[Table], audit_columns: bool
+) -> int:
+    expected_tables = {table.name for table in tables}
+    expected_columns = {table.name: {col.name for col in table.columns} for table in tables}
+
+    with target_conn.cursor() as cursor:
+        existing_tables = fetch_existing_tables(cursor, config.pg_schema)
+        existing_columns = fetch_existing_columns(cursor, config.pg_schema) if audit_columns else {}
+
+    missing_tables = sorted(expected_tables - existing_tables)
+    extra_tables = sorted(existing_tables - expected_tables)
+
+    print(f"Schema PostgreSQL: {config.pg_schema}")
+    print(f"Tabelas esperadas (schema-file): {len(expected_tables)}")
+    print(f"Tabelas existentes (PostgreSQL): {len(existing_tables)}")
+    print(f"Tabelas ausentes (PostgreSQL): {len(missing_tables)}")
+
+    if missing_tables:
+        for name in missing_tables:
+            print(f"- {name}")
+
+    if extra_tables:
+        print(f"Tabelas extras (PostgreSQL, nao estao no schema-file): {len(extra_tables)}")
+        for name in extra_tables[:30]:
+            print(f"+ {name}")
+        if len(extra_tables) > 30:
+            print(f"+ ... (+{len(extra_tables) - 30})")
+
+    if audit_columns and not missing_tables:
+        column_problems = 0
+        for table in tables:
+            expected = expected_columns.get(table.name, set())
+            existing = existing_columns.get(table.name, set())
+            missing_cols = sorted(expected - existing)
+            extra_cols = sorted(existing - expected)
+            if not missing_cols and not extra_cols:
+                continue
+            column_problems += 1
+            print(f"Tabela {table.name}:")
+            if missing_cols:
+                print(f"  Colunas ausentes: {', '.join(missing_cols)}")
+            if extra_cols:
+                preview = ", ".join(extra_cols[:30])
+                suffix = f", ... (+{len(extra_cols) - 30})" if len(extra_cols) > 30 else ""
+                print(f"  Colunas extras: {preview}{suffix}")
+
+        if column_problems:
+            print(f"Tabelas com divergencia de colunas: {column_problems}")
+
+    return 4 if missing_tables else 0
+
+
 def fetch_count_mssql(cursor: Any, table: Table) -> int:
     cursor.execute(f"SELECT COUNT(1) FROM [dbo].[{table.name}]")
     row = cursor.fetchone()
@@ -661,8 +751,20 @@ def main() -> int:
         if batch_size <= 0:
             raise CopyError("BATCH_SIZE deve ser maior que zero.")
 
-        source_conn = connect_mssql(config)
         target_conn = connect_postgres(config)
+
+        if args.audit:
+            try:
+                return audit_postgres_schema(
+                    target_conn=target_conn,
+                    config=config,
+                    tables=ordered_tables,
+                    audit_columns=args.audit_columns,
+                )
+            finally:
+                target_conn.close()
+
+        source_conn = connect_mssql(config)
         total_rejected = 0
         try:
             with target_conn.cursor() as cursor:

@@ -18,12 +18,38 @@ O projeto esta estruturado como um monolito Laravel moderno para a V1 do sistema
 - `php artisan route:list` executou com sucesso e listou 59 rotas.
 - `cmd /c npm run build` executou com sucesso, incluindo build client e SSR.
 - `php artisan test` executou sem falha fatal no PHP local.
+- `php artisan route:list --except-vendor` executou com sucesso e listou as rotas da aplicacao.
+- `php -l` executou sem erro nos arquivos PHP alterados nesta rodada.
 
 Observacao sobre testes:
 
-- Resultado local: 2 testes passaram e 27 foram ignorados.
+- Resultado local: 2 testes passaram e 28 foram ignorados.
 - Motivo dos skips: o PHP local nao possui `pdo_sqlite`.
 - A imagem Docker da aplicacao foi ajustada para instalar `pdo_sqlite`, entao a validacao completa deve ser feita dentro do container.
+
+## Atualizacao desta rodada
+
+O fluxo de criacao interna de denuncia foi alinhado com o modelo de dominio atual:
+
+- `canal` do formulario passou a enviar valores normalizados: `interno`, `telefone`, `web`.
+- `assunto_id` passou a ser obrigatorio no cadastro interno.
+- A denuncia criada internamente agora grava o assunto principal em `denuncia_assuntos`.
+- `difusaoImediata` agora alimenta `urgente` e eleva `prioridade` para `alta`.
+- Etiquetas gravam `criado_por_usuario_id` na tabela pivo.
+- Veiculos informados com marca/modelo passam a criar ou reutilizar registros em `veiculo_marcas` e `veiculo_modelos`.
+- Foi criado teste de feature para o fluxo interno: `tests/Feature/DenunciaControllerTest.php`.
+
+## Atualizacao de modernizacao do legado
+
+Foi iniciada uma segunda rodada de modernizacao da projecao legado -> banco novo:
+
+- catalogos fisicos de envolvidos deixaram de depender apenas de `varchar`
+- foram adicionadas FKs em `denuncia_envolvidos` para cor de pele, estatura, olhos, cabelo e porte fisico
+- `legado:importar-carga` agora importa esses catalogos e preenche tanto o texto legivel quanto os IDs estruturados
+- `correlatas` passou a ter destino proprio em `denuncia_vinculos`
+- `difusao_tipo` passou a ter destino proprio em `tipos_encaminhamento`
+- `resultado_quantificacoes` passou a aceitar catalogos estruturados para classe, tipo, item e unidade de medida
+- a decisao arquitetural foi documentada em `windsurf/docs/MODERNIZACAO_LEGADO_PARA_DISQUE_DENUNCIA_NOVO.md`
 
 ## Validacao bloqueada neste terminal
 

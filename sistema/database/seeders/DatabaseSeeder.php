@@ -2,14 +2,12 @@
 
 namespace Database\Seeders;
 
+use App\Models\Papel;
 use App\Models\User;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
 {
-    use WithoutModelEvents;
-
     /**
      * Seed the application's database.
      */
@@ -22,7 +20,7 @@ class DatabaseSeeder extends Seeder
             TiposResultadoSeeder::class,
         ]);
 
-        $adminRole = \App\Models\Papel::where('slug', 'administrador')->first();
+        $adminRole = Papel::where('slug', 'administrador')->first();
 
         // Seed a default admin if it doesn't exist
         $user = User::firstOrCreate([
@@ -32,7 +30,7 @@ class DatabaseSeeder extends Seeder
             'password' => bcrypt('admin123'),
         ]);
 
-        if ($adminRole && !$user->papeis()->where('papel_id', $adminRole->id)->exists()) {
+        if ($adminRole && ! $user->papeis()->where('papel_id', $adminRole->id)->exists()) {
             $user->papeis()->attach($adminRole->id);
         }
 

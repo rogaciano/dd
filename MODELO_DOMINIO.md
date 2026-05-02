@@ -184,15 +184,25 @@ Campos provaveis:
 - `sexo`
 - `idade_estimada`
 - `cor_pele`
+- `cor_pele_id`
 - `estatura`
+- `faixa_estatura_id`
 - `olhos`
+- `cor_olhos_id`
 - `cabelo`
+- `tipo_cabelo_id`
 - `porte_fisico`
+- `porte_fisico_id`
 - `sinais_particulares`
 - `observacoes`
 - `descricao_endereco`
 - `created_at`
 - `updated_at`
+
+Observacao:
+
+- os textos continuam como snapshot legivel e fallback manual
+- os campos `*_id` apontam para catalogos fisicos normalizados
 
 ### 6. `grupos_assunto`
 
@@ -324,12 +334,52 @@ Campos provaveis:
 - `id`
 - `denuncia_id`
 - `orgao_id`
+- `tipo_encaminhamento_id`
 - `tipo`
 - `status`
 - `enviado_em`
 - `prazo_em`
 - `observacoes`
 - `criado_por_usuario_id`
+- `origem_legado_id`
+- `origem_legado_tabela`
+- `created_at`
+- `updated_at`
+
+Observacao:
+
+- `interno` e `externo` devem vir do `orgao`
+- `tipo` textual fica como compatibilidade temporaria
+- `difusao_tipo` deve ser absorvido por `tipos_encaminhamento`
+
+### 12A. `tipos_encaminhamento`
+
+Catalogo estruturado de tipos de encaminhamento.
+
+Campos provaveis:
+
+- `id`
+- `nome`
+- `slug`
+- `ativo`
+- `ordem_exibicao`
+- `origem_legado_id`
+- `created_at`
+- `updated_at`
+
+### 12B. `denuncia_vinculos`
+
+Vinculos entre denuncias relacionadas.
+
+Campos provaveis:
+
+- `id`
+- `denuncia_origem_id`
+- `denuncia_relacionada_id`
+- `tipo`
+- `observacoes`
+- `origem_legado_id`
+- `origem_legado_tabela`
 - `created_at`
 - `updated_at`
 
@@ -407,12 +457,39 @@ Campos provaveis:
 
 - `id`
 - `resultado_id`
+- `classe_item_resultado_id`
+- `tipo_item_resultado_id`
+- `item_resultado_id`
 - `rotulo`
 - `quantidade`
+- `unidade_medida_id`
 - `unidade`
 - `observacoes`
+- `origem_legado_id`
+- `origem_legado_tabela`
 - `created_at`
 - `updated_at`
+
+Observacao:
+
+- os textos `rotulo` e `unidade` continuam uteis como snapshot legivel
+- as FKs estruturam a origem de `item_classe`, `item_tipo`, `item` e `unidades_metricas`
+
+### 16A. `classes_item_resultado`
+
+Catalogo das classes de itens quantificados.
+
+### 16B. `tipos_item_resultado`
+
+Catalogo dos tipos de itens quantificados.
+
+### 16C. `itens_resultado`
+
+Catalogo dos itens quantificados.
+
+### 16D. `unidades_medida`
+
+Catalogo das unidades de medida de resultados.
 
 ### 17. `anexos`
 
